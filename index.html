@@ -1,0 +1,871 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b0a">
+<title>SPORTZONE | Portal Esportivo</title>
+
+<style>
+:root{
+ --bg:#080b0a;--card:#121815;--green:#b8ff32;
+ --text:#f5f7f4;--muted:#9ba69e;--line:#29342d;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
+button,input{font:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+
+header{background:#0d120f;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+.top{max-width:1250px;margin:auto;padding:17px 22px;display:flex;justify-content:space-between;align-items:center;gap:20px}
+.logo{font-size:29px;font-weight:1000;letter-spacing:-1px}
+.logo span{color:var(--green)}
+.logo small{display:block;font-size:9px;letter-spacing:4px;color:var(--muted)}
+.search{display:flex;gap:7px}
+.search input{width:230px;background:#19221c;border:1px solid var(--line);padding:11px;border-radius:7px;color:white;outline:none}
+.search button{background:var(--green);border:0;padding:10px 15px;border-radius:7px;font-weight:bold}
+nav{max-width:1250px;margin:auto;padding:0 22px;display:flex;gap:23px;overflow-x:auto}
+nav button{background:none;border:0;color:#ddd;padding:15px 0;white-space:nowrap;border-bottom:3px solid transparent}
+nav button.active,nav button:hover{color:var(--green);border-color:var(--green)}
+.ticker{background:var(--green);color:#101510;padding:11px 20px;font-size:12px;font-weight:bold}
+.container{max-width:1250px;margin:auto;padding:25px 22px}
+.heading{display:flex;justify-content:space-between;align-items:center;margin:30px 0 18px;gap:10px}
+.heading h2{font-size:21px;border-left:4px solid var(--green);padding-left:12px}
+.heading small{color:var(--muted)}
+.hero{display:grid;grid-template-columns:1.7fr 1fr;gap:18px}
+.hero-main{height:410px;position:relative;border-radius:12px;overflow:hidden;cursor:pointer}
+.hero-main img{width:100%;height:100%;object-fit:cover}
+.hero-main:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent,rgba(0,0,0,.9))}
+.hero-text{position:absolute;bottom:0;z-index:2;padding:27px}
+.tag{display:inline-block;background:var(--green);color:#111;padding:6px 9px;border-radius:3px;font-size:10px;font-weight:bold}
+.hero-text h1{font-size:clamp(26px,4vw,38px);margin:13px 0}
+.hero-text p{color:#ddd;font-size:13px;line-height:1.6}
+.side-news{display:flex;flex-direction:column;gap:13px}
+.side-card{display:flex;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:9px;padding:9px;min-height:120px;cursor:pointer}
+.side-card img{width:115px;min-width:115px;height:100px;object-fit:cover;border-radius:6px}
+.side-card small{color:var(--green);font-size:10px;font-weight:bold}
+.side-card h3{font-size:14px;line-height:1.4;margin-top:7px}
+.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.news-card{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;cursor:pointer;transition:.2s}
+.news-card:hover{transform:translateY(-4px);border-color:var(--green)}
+.news-card img{width:100%;height:195px;object-fit:cover;background:#202820;display:block}
+.news-content{padding:15px}
+.news-content small{color:var(--green);font-weight:bold;font-size:10px}
+.news-content h3{font-size:17px;line-height:1.4;margin:9px 0}
+.news-content p{color:var(--muted);font-size:12px;line-height:1.6}
+.meta{font-size:10px;color:var(--muted);margin-top:13px}
+.video-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}
+.video-card{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.video-image{height:165px;position:relative;overflow:hidden}
+.video-image img{width:100%;height:100%;object-fit:cover;filter:brightness(.65)}
+.play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:55px;height:55px;border-radius:50%;background:var(--green);color:#111;display:grid;place-items:center;font-size:22px}
+.video-info{padding:15px}
+.video-info h3{font-size:16px;margin-bottom:8px}
+.video-info p{font-size:12px;color:var(--muted);margin:10px 0 13px}
+.video-info a{display:inline-block;background:var(--green);color:#111;padding:10px 13px;border-radius:6px;font-size:11px;font-weight:bold}
+footer{border-top:1px solid var(--line);margin-top:50px;text-align:center;padding:35px 15px;color:var(--muted);font-size:12px;line-height:2}
+footer strong{color:var(--green)}
+.modal{display:none;position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.94);overflow:auto;padding:20px}
+.modal.show{display:block}
+.close{position:fixed;right:17px;top:15px;z-index:50;width:43px;height:43px;border:0;border-radius:50%;background:var(--green);font-size:25px;font-weight:bold}
+.article{max-width:850px;margin:30px auto;background:var(--card);border-radius:12px;overflow:hidden}
+.article img{width:100%;max-height:430px;object-fit:cover;background:#202820;display:block}
+.article-body{padding:30px}
+.article-body h1{font-size:clamp(25px,4vw,38px);line-height:1.2;margin:15px 0}
+.article-body p{font-size:15px;line-height:1.9;color:#d1d9d2;margin:17px 0}
+.article-body .lead{font-size:18px;color:white}
+.source{color:var(--green);text-decoration:underline}
+.empty{color:var(--muted);padding:25px;grid-column:1/-1}
+.date{font-size:11px;color:var(--muted);margin-top:8px}
+
+@media(max-width:800px){
+ .hero{grid-template-columns:1fr}
+ .side-news{display:grid;grid-template-columns:1fr 1fr}
+ .news-grid,.video-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:550px){
+ .top{flex-wrap:wrap}.search{width:100%}
+ .search input{width:100%;min-width:0}
+ nav{padding:0 13px;gap:18px}
+ .container{padding:18px 13px}
+ .hero-main{height:320px}.hero-text{padding:17px}
+ .side-news{grid-template-columns:1fr}
+ .news-grid,.video-grid{grid-template-columns:1fr 1fr;gap:10px}
+ .news-card img{height:125px}
+ .news-content{padding:10px}
+ .news-content h3{font-size:14px}
+ .news-content p{font-size:11px}
+ .video-image{height:110px}
+ .video-info{padding:10px}
+ .video-info h3{font-size:13px}
+ .article-body{padding:19px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <div class="top">
+  <div class="logo">SPORT<span>ZONE</span><small>O MUNDO DO ESPORTE</small></div>
+  <form class="search" id="searchForm">
+   <input id="searchInput" placeholder="Buscar notícias...">
+   <button type="submit">BUSCAR</button>
+  </form>
+ </div>
+
+ <nav>
+  <button class="active" data-cat="Todos">Início</button>
+  <button data-cat="Futebol">Futebol</button>
+  <button data-cat="Fórmula 1">Fórmula 1</button>
+  <button data-cat="Basquete">Basquete / NBA</button>
+  <button data-cat="Vôlei feminino">Vôlei feminino</button>
+  <button data-cat="Vôlei masculino">Vôlei masculino</button>
+  <button data-cat="Lutas">Lutas</button>
+  <button data-cat="Outros">Outros esportes</button>
+ </nav>
+</header>
+
+<div class="ticker">● SPORTZONE | INFORMAÇÃO, ESPORTE E PAIXÃO</div>
+
+<main class="container">
+
+ <div class="heading">
+  <h2>DESTAQUE DO DIA</h2>
+  <small>EDIÇÃO SPORTZONE</small>
+ </div>
+
+ <section class="hero">
+  <article class="hero-main" id="hero">
+   <img id="heroImage"
+    src="https://storage.googleapis.com/crf-strapi-media-prd/Whats_App_Image_2026_11_04_at_20_32_38_4e69565c02/Whats_App_Image_2026_11_04_at_20_32_38_4e69565c02.jpeg"
+    data-fallback="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1200"
+    onerror="this.onerror=null;this.src=this.dataset.fallback"
+    alt="Flamengo">
+   <div class="hero-text">
+    <span class="tag">DESTAQUE</span>
+    <h1 id="heroTitle">Flamengo vence o Grêmio e amplia vantagem na liderança</h1>
+    <p id="heroDescription">Confira as principais notícias do esporte.</p>
+   </div>
+  </article>
+  <div class="side-news" id="sideNews"></div>
+ </section>
+
+ <div class="heading">
+  <h2>ÚLTIMAS MATÉRIAS</h2>
+  <small id="count"></small>
+ </div>
+
+ <section class="news-grid" id="newsGrid"></section>
+
+ <div class="heading">
+  <h2>SPORTZONE PLAY</h2>
+  <small>VÍDEOS ESPORTIVOS</small>
+ </div>
+
+ <section class="video-grid" id="videos"></section>
+
+</main>
+
+<footer>
+ <div class="logo">SPORT<span>ZONE</span></div>
+ <p>Seu portal de notícias esportivas.</p>
+ <p>Futebol • Fórmula 1 • NBA • Vôlei • Lutas</p>
+ <p>© 2026 <strong>SPORTZONE</strong></p>
+</footer>
+
+<div class="modal" id="modal">
+ <button class="close" id="close">×</button>
+ <div class="article" id="article"></div>
+</div>
+
+<script>
+
+// ========================================
+// IMAGENS DAS MODALIDADES
+// Fotos principais hospedadas em fontes
+// esportivas e alternativas por modalidade.
+// ========================================
+
+const fallbackFootball =
+"https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1200";
+
+const photos = {
+
+ futebol:{
+  main:"https://www.zerozero.pt/img/noticias/357/imgS300I1038357T20260128090244.jpg",
+  fallback:fallbackFootball
+ },
+
+ flamengo:{
+  main:"https://storage.googleapis.com/crf-strapi-media-prd/Whats_App_Image_2026_11_04_at_20_32_38_4e69565c02/Whats_App_Image_2026_11_04_at_20_32_38_4e69565c02.jpeg",
+  fallback:fallbackFootball
+ },
+
+ palmeiras:{
+  main:"https://admin.itatiaia.com.br/wp-content/uploads/sites/27/2026/05/9a8805f3-f3c7-4990-b788-89ce64f89a52.jpg?h=300&quality=75&w=450",
+  fallback:fallbackFootball
+ },
+
+ vasco:{
+  main:"https://media.meuvasco.com.br/20260418-220028-1-9-puma-comemora-o-gol-do-vasco-contra-o-sao-paulo-foto-andre-durao.jpg",
+  fallback:fallbackFootball
+ },
+
+ cruzeiro:{
+  main:"https://static.centraldatoca.com/2026/01/VqxaCb8t-ChristianRomeroWandersonKJ-1024x640.jpg",
+  fallback:fallbackFootball
+ },
+
+ // FÓRMULA 1 - imagem da cobertura oficial da F1
+ formula:{
+  main:"https://media.formula1.com/image/upload/c_lfill,w_1200/q_auto/v1740000001/fom-website/2026/Sao%20Paulo%20%28Brazil%29/16x9%20double%20split%20%2835%29.webp",
+  fallback:"https://images.unsplash.com/photo-1504707748692-419802cf939d?w=1200"
+ },
+
+ formulaPodium:{
+  main:"https://media.formula1.com/image/upload/c_lfill,w_1200/q_auto/v1740000001/fom-website/2026/Sao%20Paulo%20%28Brazil%29/16x9%20double%20split%20%2835%29.webp",
+  fallback:"https://images.unsplash.com/photo-1504707748692-419802cf939d?w=1200"
+ },
+
+ // NBA - fotografia publicada pelo UOL
+ nba:{
+  main:"https://conteudo.imguol.com.br/c/esporte/82/2026/11/17/joel-embiid-distribui-autografos-apos-vitoria-dos-76ers-contra-os-nets-na-nba-1794920279081_v2_450x450.jpg",
+  fallback:"https://images.unsplash.com/photo-1546519638-68e109498ffc?w=1200"
+ },
+
+ nbaQuadra:{
+  main:"https://images.unsplash.com/photo-1504450758481-7338eba7524a?w=1200",
+  fallback:"https://images.unsplash.com/photo-1546519638-68e109498ffc?w=1200"
+ },
+
+ // VÔLEI - fotografias da CBV e imagens de quadra
+ voleiF:{
+  main:"https://assets.cbv.com.br/DHA_8388_06c49fef27.jpg",
+  fallback:"https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?w=1200"
+ },
+
+ voleiM:{
+  main:"https://assets.cbv.com.br/Whats_App_Image_2026_11_16_at_19_09_38_3ea84c6fc9.jpeg",
+  fallback:"https://images.unsplash.com/photo-1592656094267-764a45160876?w=1200"
+ },
+
+ voleiRenata:{
+  main:"https://cbv.com.br/assets/VoleiRenata.jpeg",
+  fallback:"https://images.unsplash.com/photo-1592656094267-764a45160876?w=1200"
+ },
+
+ superliga:{
+  main:"https://assets.cbv.com.br/DHA_8388_06c49fef27.jpg",
+  fallback:"https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?w=1200"
+ },
+
+ lutas:{
+  main:"https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=1200",
+  fallback:"https://images.unsplash.com/photo-1517438322307-e67111335449?w=1200"
+ },
+
+ tenis:{
+  main:"https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?w=1200",
+  fallback:"https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=1200"
+ }
+};
+
+// ========================================
+// NOTÍCIAS
+// ========================================
+
+const news = [
+
+/* BRASILEIRÃO - 20 CLUBES */
+
+{
+ cat:"Futebol",team:"Flamengo e Grêmio",
+ title:"Flamengo vence o Grêmio por 3 a 1 e amplia vantagem na liderança",
+ desc:"Pedro marcou duas vezes e Samuel Lino também balançou as redes no Maracanã.",
+ photo:photos.flamengo,
+ date:"04/11/2026",
+ body:"O Flamengo venceu o Grêmio por 3 a 1, no Maracanã, pela 34ª rodada do Campeonato Brasileiro. Samuel Lino abriu o placar e Pedro marcou duas vezes. O resultado foi importante para a equipe rubro-negra na reta final da competição.",
+ source:"https://www.flamengo.com.br/flamengo/noticias/futebol/flamengo-vence-o-gremio-no-maracana-e-amplia-vantagem-na-lideranca-do-brasileirao"
+},
+
+{
+ cat:"Futebol",team:"Palmeiras e Remo",
+ title:"Palmeiras goleia o Remo por 6 a 1 no Brasileirão",
+ desc:"Jhon Arias marcou duas vezes na goleada alviverde.",
+ photo:photos.palmeiras,
+ date:"05/11/2026",
+ body:"O Palmeiras venceu o Remo por 6 a 1 em partida válida pela 34ª rodada do Campeonato Brasileiro. A goleada foi um dos principais resultados da rodada.",
+ source:"https://guiagol.com/br/campeonato/brasileirao-serie-a/resultados/"
+},
+
+{
+ cat:"Futebol",team:"Cruzeiro e Bahia",
+ title:"Cruzeiro vence o Bahia por 3 a 2 em jogo movimentado",
+ desc:"Equipe mineira conquistou três pontos importantes no Mineirão.",
+ photo:photos.cruzeiro,
+ date:"05/11/2026",
+ body:"O Cruzeiro venceu o Bahia por 3 a 2 pela 34ª rodada do Brasileirão. A partida teve cinco gols e movimentou a disputa pelas primeiras posições.",
+ source:"https://guiagol.com/br/campeonato/brasileirao-serie-a/resultados/"
+},
+
+{
+ cat:"Futebol",team:"Fluminense e Vitória",
+ title:"Fluminense vence o Vitória por 3 a 0 fora de casa",
+ desc:"Tricolor conquistou uma vitória importante no Barradão.",
+ photo:photos.futebol,
+ date:"06/11/2026",
+ body:"O Fluminense venceu o Vitória por 3 a 0, fora de casa, em resultado importante pela 34ª rodada do Campeonato Brasileiro.",
+ source:"https://guiagol.com/br/campeonato/brasileirao-serie-a/resultados/"
+},
+
+{
+ cat:"Futebol",team:"Botafogo e Atlético-MG",
+ title:"Botafogo derrota o Atlético-MG por 1 a 0",
+ desc:"Alvinegro garantiu os três pontos em confronto equilibrado.",
+ photo:photos.futebol,
+ date:"04/11/2026",
+ body:"O Botafogo venceu o Atlético-MG por 1 a 0 pela 34ª rodada do Brasileirão. O resultado foi importante para a equipe carioca na reta final da competição.",
+ source:"https://guiagol.com/br/campeonato/brasileirao-serie-a/resultados/"
+},
+
+{
+ cat:"Futebol",team:"Vasco e Athletico-PR",
+ title:"Vasco vence o Athletico-PR por 3 a 1",
+ desc:"Cruzmaltino conquista vitória importante fora de casa.",
+ photo:photos.vasco,
+ date:"04/11/2026",
+ body:"O Vasco venceu o Athletico Paranaense por 3 a 1 pela 34ª rodada do Campeonato Brasileiro. A equipe carioca conquistou três pontos importantes fora de casa.",
+ source:"https://guiagol.com/br/campeonato/brasileirao-serie-a/resultados/"
+},
+
+{
+ cat:"Futebol",team:"São Paulo e Corinthians",
+ title:"São Paulo e Corinthians empatam sem gols no clássico",
+ desc:"Majestoso terminou em 0 a 0 pelo Campeonato Brasileiro.",
+ photo:photos.futebol,
+ date:"04/11/2026",
+ body:"São Paulo e Corinthians empataram por 0 a 0 em clássico válido pela 34ª rodada do Brasileirão. O resultado deixou as equipes com um ponto cada.",
+ source:"https://guiagol.com/br/campeonato/brasileirao-serie-a/resultados/"
+},
+
+{
+ cat:"Futebol",team:"Internacional e Coritiba",
+ title:"Internacional vence o Coritiba por 1 a 0",
+ desc:"Colorado conquistou vitória importante no Beira-Rio.",
+ photo:photos.futebol,
+ date:"03/11/2026",
+ body:"O Internacional venceu o Coritiba por 1 a 0 pela 34ª rodada do Brasileirão. O resultado garantiu três pontos importantes para o Colorado.",
+ source:"https://guiagol.com/br/campeonato/brasileirao-serie-a/resultados/"
+},
+
+{
+ cat:"Futebol",team:"Chapecoense e Mirassol",
+ title:"Mirassol vence a Chapecoense fora de casa",
+ desc:"Equipe paulista conquistou resultado positivo por 2 a 1.",
+ photo:photos.futebol,
+ date:"03/11/2026",
+ body:"O Mirassol venceu a Chapecoense por 2 a 1 pela 34ª rodada do Campeonato Brasileiro.",
+ source:"https://guiagol.com/br/campeonato/brasileirao-serie-a/resultados/"
+},
+
+{
+ cat:"Futebol",team:"RB Bragantino e Santos",
+ title:"Bragantino vence o Santos por 2 a 1",
+ desc:"Massa Bruta levou a melhor no confronto da rodada.",
+ photo:photos.futebol,
+ date:"02/11/2026",
+ body:"O Red Bull Bragantino venceu o Santos por 2 a 1 e conquistou três pontos na 34ª rodada do Campeonato Brasileiro.",
+ source:"https://guiagol.com/br/campeonato/brasileirao-serie-a/resultados/"
+},
+
+{
+ cat:"Futebol",team:"Brasileirão",
+ title:"CBF divulga datas das últimas rodadas do Brasileirão",
+ desc:"Competição entra na reta final com jogos decisivos em novembro e dezembro.",
+ photo:photos.futebol,
+ date:"06/11/2026",
+ body:"A CBF divulgou as datas e os horários das duas últimas rodadas do Campeonato Brasileiro. A rodada 37 será disputada entre 24 e 29 de novembro. A última rodada está marcada para 2 de dezembro.",
+ source:"https://ge.globo.com/google/amp/ba/futebol/brasileirao-serie-a/noticia/2026/11/06/cbf-divulga-datas-e-horarios-das-duas-ultimas-rodadas-do-brasileirao-veja-detalhes.ghtml"
+},
+
+{
+ cat:"Futebol",team:"Palmeiras e Flamengo",
+ title:"Palmeiras e Flamengo se preparam para confronto decisivo",
+ desc:"Equipes estão separadas por apenas três pontos na liderança.",
+ photo:photos.flamengo,
+ date:"17/11/2026",
+ body:"Palmeiras e Flamengo se aproximam de um confronto decisivo pelo Campeonato Brasileiro. A partida está marcada para 21 de novembro e pode ter impacto direto na disputa pelo título.",
+ source:"https://www.uol.com.br/esporte/futebol/ultimas-noticias/2026/11/17/palmeiras-x-flamengo-arbitragem.ghtm"
+},
+
+/* FÓRMULA 1 */
+
+{
+ cat:"Fórmula 1",team:"Lando Norris",
+ title:"Lando Norris vence o GP de São Paulo em Interlagos",
+ desc:"Britânico superou Verstappen em corrida marcada pela chuva.",
+ photo:photos.formulaPodium,
+ date:"08/11/2026",
+ body:"Lando Norris venceu o Grande Prêmio de São Paulo de 2026. Max Verstappen terminou em segundo, a 14,6 segundos, após uma grande recuperação. Isack Hadjar completou o pódio. A Mercedes garantiu o título de construtores da temporada.",
+ source:"https://www.formula1.com/en/latest/article/norris-beats-verstappen-in-wet-sao-paulo-gp-thriller-as-mercedes-win-constructors-championship.7JN7MXLZf5lk5l0C3gfKGI"
+},
+
+{
+ cat:"Fórmula 1",team:"Max Verstappen",
+ title:"Verstappen faz grande recuperação e termina em segundo no Brasil",
+ desc:"Holandês saiu da 21ª posição e chegou ao pódio em Interlagos.",
+ photo:photos.formula,
+ date:"08/11/2026",
+ body:"Max Verstappen largou na 21ª posição e terminou o GP de São Paulo em segundo lugar. O piloto fez uma corrida de recuperação em Interlagos e subiu ao pódio, atrás de Lando Norris.",
+ source:"https://www.formula1.com/en/latest/article/norris-beats-verstappen-in-wet-sao-paulo-gp-thriller-as-mercedes-win-constructors-championship.7JN7MXLZf5lk5l0C3gfKGI"
+},
+
+{
+ cat:"Fórmula 1",team:"Mercedes",
+ title:"Mercedes conquista o título de construtores da Fórmula 1",
+ desc:"Equipe confirmou o campeonato após o GP de São Paulo.",
+ photo:photos.formulaPodium,
+ date:"08/11/2026",
+ body:"A Mercedes garantiu o Campeonato de Construtores de 2026 após o Grande Prêmio de São Paulo. George Russell terminou em quarto e Kimi Antonelli em quinto, resultado suficiente para confirmar o título da equipe.",
+ source:"https://www.fia.com/news/f1-norris-triumphs-sao-paulo-mercedes-secure-2026-constructors-championship"
+},
+
+{
+ cat:"Fórmula 1",team:"Franco Colapinto",
+ title:"Colapinto tem futuro confirmado na Fórmula 1 para 2027",
+ desc:"Piloto argentino seguirá no grid na próxima temporada.",
+ photo:photos.formula,
+ date:"13/11/2026",
+ body:"Franco Colapinto teve sua continuidade na Fórmula 1 para a temporada de 2027 destacada em notícia publicada em novembro. O piloto segue sendo um dos nomes acompanhados pelos fãs da categoria.",
+ source:"https://www.365scores.com/es/news/cuando-vuelve-franco-colapinto-las-vegas/"
+},
+
+{
+ cat:"Fórmula 1",team:"GP de São Paulo",
+ title:"Veja os melhores momentos do GP de São Paulo de 2026",
+ desc:"Corrida em Interlagos teve chuva, ultrapassagens e disputa pelo pódio.",
+ photo:photos.formulaPodium,
+ date:"09/11/2026",
+ body:"O Grande Prêmio de São Paulo de 2026 entregou uma corrida movimentada em Interlagos. Lando Norris venceu, Verstappen chegou em segundo após largar no fundo do grid e Isack Hadjar completou o pódio.",
+ source:"https://www.formula1.com/en/latest/article/sao-paulo-lowdown-all-the-key-moments-as-mercedes-secures-constructors-title-and-norris-wins-in-the-rain.2VjsvSp3rejjziq7VbVVOr"
+},
+
+/* NBA */
+
+{
+ cat:"Basquete",team:"Philadelphia 76ers",
+ title:"Embiid marca 37 pontos e 76ers vencem os Nets",
+ desc:"Philadelphia venceu por 135 a 123 e retomou a liderança do Leste.",
+ photo:photos.nba,
+ date:"17/11/2026",
+ body:"O Philadelphia 76ers venceu o Brooklyn Nets por 135 a 123. Joel Embiid marcou 37 pontos e teve uma grande atuação. Com o resultado, Philadelphia chegou a 12 vitórias e três derrotas e retomou a liderança da Conferência Leste.",
+ source:"https://www.uol.com.br/esporte/ultimas-noticias/2026/11/17/embiid-faz-37-pontos-e-76ers-vencem-warriors-perdem-de-novo.ghtm"
+},
+
+{
+ cat:"Basquete",team:"Orlando Magic",
+ title:"Magic derrota Celtics e tira Boston da liderança do Leste",
+ desc:"Orlando venceu por 115 a 105 em Boston.",
+ photo:photos.nbaQuadra,
+ date:"17/11/2026",
+ body:"O Orlando Magic venceu o Boston Celtics por 115 a 105. O resultado mexeu com a classificação da Conferência Leste e ajudou o Philadelphia 76ers a assumir a liderança.",
+ source:"https://www.uol.com.br/esporte/ultimas-noticias/2026/11/17/embiid-faz-37-pontos-e-76ers-vencem-warriors-perdem-de-novo.ghtm"
+},
+
+{
+ cat:"Basquete",team:"Cleveland Cavaliers",
+ title:"Donovan Mitchell marca 39 pontos em vitória dos Cavaliers",
+ desc:"Cleveland venceu o Chicago Bulls por 126 a 115.",
+ photo:photos.nbaQuadra,
+ date:"17/11/2026",
+ body:"Donovan Mitchell marcou 39 pontos na vitória do Cleveland Cavaliers sobre o Chicago Bulls por 126 a 115. O armador foi o grande destaque da partida.",
+ source:"https://www.uol.com.br/esporte/ultimas-noticias/2026/11/17/embiid-faz-37-pontos-e-76ers-vencem-warriors-perdem-de-novo.ghtm"
+},
+
+{
+ cat:"Basquete",team:"Minnesota Timberwolves",
+ title:"Timberwolves vencem Portland com grande atuação de Terrence Shannon",
+ desc:"Equipe de Minnesota venceu por 106 a 98.",
+ photo:photos.nbaQuadra,
+ date:"17/11/2026",
+ body:"O Minnesota Timberwolves venceu o Portland Trail Blazers por 106 a 98. Terrence Shannon Jr. foi um dos destaques da partida, com 34 pontos.",
+ source:"https://www.uol.com.br/esporte/ultimas-noticias/2026/11/17/embiid-faz-37-pontos-e-76ers-vencem-warriors-perdem-de-novo.ghtm"
+},
+
+{
+ cat:"Basquete",team:"Phoenix Suns e Denver Nuggets",
+ title:"Suns vencem os Nuggets fora de casa",
+ desc:"Phoenix derrotou Denver por 117 a 105.",
+ photo:photos.nbaQuadra,
+ date:"17/11/2026",
+ body:"O Phoenix Suns venceu o Denver Nuggets por 117 a 105. Nikola Jokic e Jamal Murray marcaram 28 pontos cada pelo time de Denver.",
+ source:"https://www.uol.com.br/esporte/ultimas-noticias/2026/11/17/embiid-faz-37-pontos-e-76ers-vencem-warriors-perdem-de-novo.ghtm"
+},
+
+{
+ cat:"Basquete",team:"NBA",
+ title:"Spurs e Lakers aparecem entre os destaques do primeiro mês",
+ desc:"Temporada começa com campanhas fortes e disputas equilibradas.",
+ photo:photos.nbaQuadra,
+ date:"17/11/2026",
+ body:"O primeiro mês da temporada 2026/27 apresenta campanhas de destaque de San Antonio Spurs e Los Angeles Lakers na Conferência Oeste. Philadelphia aparece na liderança do Leste.",
+ source:"https://www.hoop78.com/artigos/classificacao_da_nba_o_que_o_1o_mes_mostrou_de_cada_time"
+},
+
+{
+ cat:"Basquete",team:"Memphis Grizzlies",
+ title:"Memphis vence Washington e amplia sequência negativa dos Wizards",
+ desc:"Grizzlies marcaram 136 pontos na vitória sobre os Wizards.",
+ photo:photos.nbaQuadra,
+ date:"17/11/2026",
+ body:"O Memphis Grizzlies venceu o Washington Wizards por 136 a 120. A equipe de Washington sofreu mais uma derrota na temporada.",
+ source:"https://www.uol.com.br/esporte/ultimas-noticias/2026/11/17/embiid-faz-37-pontos-e-76ers-vencem-warriors-perdem-de-novo.ghtm"
+},
+
+/* VÔLEI FEMININO */
+
+{
+ cat:"Vôlei feminino",team:"Sesc RJ Flamengo",
+ title:"Sesc RJ Flamengo vence o Fluminense por 3 sets a 0",
+ desc:"Clássico carioca movimentou a Superliga feminina.",
+ photo:photos.voleiF,
+ date:"12/11/2026",
+ body:"O Sesc RJ Flamengo venceu o Fluminense por 3 sets a 0 pela Superliga feminina 2026/27. O resultado foi importante para a equipe carioca na competição.",
+ source:"https://cbv.com.br/volei-de-quadra/superliga-a-feminina"
+},
+
+{
+ cat:"Vôlei feminino",team:"Batavo Mackenzie",
+ title:"Mackenzie vence o atual campeão Dentil Praia Clube",
+ desc:"Equipe mineira conquistou resultado importante na Superliga.",
+ photo:photos.voleiF,
+ date:"13/11/2026",
+ body:"O Batavo Mackenzie venceu o Dentil Praia Clube por 3 sets a 1 na Superliga feminina 2026/27. O resultado marcou uma vitória importante da equipe na competição.",
+ source:"https://cbv.com.br/volei-de-quadra/superliga-a-feminina"
+},
+
+{
+ cat:"Vôlei feminino",team:"Osasco e Sesi Bauru",
+ title:"Sesi Bauru vence Osasco no tie-break pela Superliga",
+ desc:"Confronto entre duas equipes tradicionais foi decidido no quinto set.",
+ photo:photos.voleiF,
+ date:"13/11/2026",
+ body:"O Sesi Vôlei Bauru venceu o Osasco São Cristóvão Saúde por 3 sets a 2 pela Superliga feminina. A partida foi uma das atrações da rodada.",
+ source:"https://cbv.com.br/volei-de-quadra/superliga-a-feminina"
+},
+
+{
+ cat:"Vôlei feminino",team:"Gerdau Minas",
+ title:"Gerdau Minas vence e segue na disputa pelas primeiras posições",
+ desc:"Equipe mineira mantém campanha forte na Superliga.",
+ photo:photos.voleiF,
+ date:"12/11/2026",
+ body:"O Gerdau Minas venceu o Sancor Seguros Vôlei por 3 sets a 0 na Superliga feminina 2026/27. O resultado ajudou a equipe a seguir entre as primeiras colocadas.",
+ source:"https://cbv.com.br/volei-de-quadra/superliga-a-feminina"
+},
+
+{
+ cat:"Vôlei feminino",team:"Superliga feminina",
+ title:"Superliga feminina reúne grandes equipes do vôlei brasileiro",
+ desc:"Competição conta com clubes tradicionais de diferentes estados.",
+ photo:photos.superliga,
+ date:"Temporada 2026/27",
+ body:"A Superliga feminina 2026/27 reúne equipes como Sesc RJ Flamengo, Gerdau Minas, Osasco, Dentil Praia Clube, Sesi Bauru, Fluminense e Batavo Mackenzie. A competição é organizada pela Confederação Brasileira de Voleibol.",
+ source:"https://cbv.com.br/volei-de-quadra/superliga-a-feminina"
+},
+
+/* VÔLEI MASCULINO */
+
+{
+ cat:"Vôlei masculino",team:"Vôlei Renata",
+ title:"Vôlei Renata vence Sesi Bauru e mantém invencibilidade",
+ desc:"Equipe de Campinas venceu por 3 sets a 0 na Superliga.",
+ photo:photos.voleiRenata,
+ date:"12/11/2026",
+ body:"O Vôlei Renata venceu o Sesi Bauru por 3 sets a 0 pela terceira rodada da Superliga masculina 2026/27. A vitória manteve a equipe de Campinas invicta na competição.",
+ source:"https://cbv.com.br/noticias/volei-de-quadra/2026-11-12/chuva-de-bichos-de-pelucia-marca-3-rodada-e-tres-times-seguem-invictos-na-superliga-masculina"
+},
+
+{
+ cat:"Vôlei masculino",team:"Sada Cruzeiro",
+ title:"Sada Cruzeiro vence Norde Vôlei e mantém campanha invicta",
+ desc:"Equipe mineira venceu por 3 sets a 0 em Fortaleza.",
+ photo:photos.voleiM,
+ date:"12/11/2026",
+ body:"O Sada Cruzeiro venceu o Norde Vôlei por 3 sets a 0 pela terceira rodada da Superliga masculina. A equipe mineira chegou à quarta vitória e seguiu invicta.",
+ source:"https://cbv.com.br/noticias/volei-de-quadra/2026-11-12/chuva-de-bichos-de-pelucia-marca-3-rodada-e-tres-times-seguem-invictos-na-superliga-masculina"
+},
+
+{
+ cat:"Vôlei masculino",team:"Itambé Minas",
+ title:"Itambé Minas vence no tie-break e continua invicto",
+ desc:"Equipe mineira superou o Azulim/Sicoob Aracoop em cinco sets.",
+ photo:photos.voleiM,
+ date:"12/11/2026",
+ body:"O Itambé Minas venceu o Azulim/Sicoob Aracoop/Monte Carmelo no tie-break e manteve sua invencibilidade na Superliga masculina 2026/27.",
+ source:"https://cbv.com.br/noticias/volei-de-quadra/2026-11-12/chuva-de-bichos-de-pelucia-marca-3-rodada-e-tres-times-seguem-invictos-na-superliga-masculina"
+},
+
+{
+ cat:"Vôlei masculino",team:"Superliga masculina",
+ title:"Três equipes seguem invictas na Superliga masculina",
+ desc:"Sada Cruzeiro, Itambé Minas e Vôlei Renata começaram bem a temporada.",
+ photo:photos.voleiM,
+ date:"12/11/2026",
+ body:"Após a terceira rodada da Superliga masculina 2026/27, Sada Cruzeiro, Itambé Minas e Vôlei Renata seguiam invictos. A competição reúne equipes de diferentes regiões do país.",
+ source:"https://cbv.com.br/noticias/volei-de-quadra/2026-11-12/chuva-de-bichos-de-pelucia-marca-3-rodada-e-tres-times-seguem-invictos-na-superliga-masculina"
+},
+
+{
+ cat:"Vôlei masculino",team:"Superliga masculina",
+ title:"Superliga masculina tem rodada marcada por jogos equilibrados",
+ desc:"Clubes tradicionais disputam as primeiras posições da competição.",
+ photo:photos.superliga,
+ date:"Novembro de 2026",
+ body:"A Superliga masculina 2026/27 reúne equipes como Sada Cruzeiro, Itambé Minas, Vôlei Renata, Sesi Bauru, Suzano e Praia Clube. A temporada segue com partidas importantes na disputa pela classificação.",
+ source:"https://cbv.com.br/volei-de-quadra/superliga-a-masculina"
+},
+
+/* OUTROS ESPORTES */
+
+{
+ cat:"Lutas",team:"UFC",
+ title:"UFC: acompanhe os principais eventos do MMA mundial",
+ desc:"Confira os atletas, resultados e próximos desafios do octógono.",
+ photo:photos.lutas,
+ date:"Especial",
+ body:"O UFC reúne alguns dos principais atletas das artes marciais mistas. Acompanhe notícias, resultados e informações sobre os próximos eventos.",
+ source:"https://www.ufc.com/"
+},
+
+{
+ cat:"Outros",team:"Tênis",
+ title:"ATP Tour: temporada reúne os melhores tenistas do mundo",
+ desc:"Circuito internacional segue com torneios e grandes disputas.",
+ photo:photos.tenis,
+ date:"Especial",
+ body:"O circuito ATP reúne os principais tenistas do mundo em competições disputadas em diferentes superfícies. Acompanhe resultados e notícias da modalidade.",
+ source:"https://www.atptour.com/"
+},
+
+{
+ cat:"Outros",team:"Esportes olímpicos",
+ title:"Vôlei, tênis e outras modalidades movimentam o esporte mundial",
+ desc:"Acompanhe notícias de diferentes modalidades esportivas.",
+ photo:photos.superliga,
+ date:"Especial",
+ body:"O SPORTZONE também acompanha outras modalidades, com notícias sobre competições nacionais e internacionais.",
+ source:"https://www.olympics.com/"
+}
+
+];
+
+// ========================================
+// VÍDEOS
+// ========================================
+
+const videos=[
+ {title:"Brasileirão Série A",cat:"Futebol",photo:photos.flamengo,search:"Brasileirão Série A 2026 melhores momentos"},
+ {title:"Palmeiras e Flamengo",cat:"Futebol",photo:photos.palmeiras,search:"Palmeiras Flamengo 2026 melhores momentos"},
+ {title:"Fórmula 1 - GP de São Paulo",cat:"Fórmula 1",photo:photos.formula,search:"Formula 1 2026 Sao Paulo Grand Prix highlights official"},
+ {title:"Fórmula 1 - Melhores momentos",cat:"Fórmula 1",photo:photos.formulaPodium,search:"Formula 1 official race highlights 2026"},
+ {title:"NBA - Melhores momentos",cat:"Basquete",photo:photos.nba,search:"NBA official highlights 2026"},
+ {title:"NBA - Top jogadas",cat:"Basquete",photo:photos.nbaQuadra,search:"NBA top plays 2026 official"},
+ {title:"Vôlei feminino",cat:"Vôlei feminino",photo:photos.voleiF,search:"Superliga feminina 2026 melhores momentos"},
+ {title:"Vôlei masculino",cat:"Vôlei masculino",photo:photos.voleiM,search:"Superliga masculina 2026 melhores momentos"},
+ {title:"UFC e MMA",cat:"Lutas",photo:photos.lutas,search:"UFC official highlights"},
+ {title:"Tênis mundial",cat:"Outros",photo:photos.tenis,search:"ATP Tour official highlights"}
+];
+
+// ========================================
+// FUNÇÕES DO SITE
+// ========================================
+
+const grid=document.getElementById("newsGrid");
+const side=document.getElementById("sideNews");
+const modal=document.getElementById("modal");
+const article=document.getElementById("article");
+
+let activeCategory="Todos";
+let searchText="";
+
+function imageHTML(photo,alt="Foto esportiva"){
+ const safePhoto=photo||photos.futebol;
+
+ return `
+ <img
+  src="${safePhoto.main}"
+  data-fallback="${safePhoto.fallback}"
+  onerror="this.onerror=null;this.src=this.dataset.fallback"
+  alt="${alt}"
+  loading="lazy"
+ >`;
+}
+
+function openArticle(item){
+ article.innerHTML=`
+ ${imageHTML(item.photo,item.team)}
+ <div class="article-body">
+  <span class="tag">${item.team||item.cat}</span>
+  <h1>${item.title}</h1>
+  <div class="date">${item.date} • SPORTZONE</div>
+  <p class="lead">${item.desc}</p>
+  <p>${item.body}</p>
+  <p>Confira a publicação original para acompanhar todos os detalhes.</p>
+  <p><a class="source" href="${item.source}" target="_blank" rel="noopener">Ler notícia na fonte original →</a></p>
+  <p><small>SPORTZONE | Conteúdo com referência à publicação original.</small></p>
+ </div>`;
+
+ modal.classList.add("show");
+ document.body.style.overflow="hidden";
+}
+
+function renderNews(){
+
+ const filtered=news.filter(item=>{
+  const categoryOK=
+   activeCategory==="Todos"||item.cat===activeCategory;
+
+  const text=(
+   item.title+" "+
+   item.desc+" "+
+   item.cat+" "+
+   item.team
+  ).toLowerCase();
+
+  return categoryOK&&text.includes(searchText);
+ });
+
+ grid.innerHTML=filtered.map(item=>`
+  <article class="news-card">
+   ${imageHTML(item.photo,item.team)}
+   <div class="news-content">
+    <small>${item.team.toUpperCase()}</small>
+    <h3>${item.title}</h3>
+    <p>${item.desc}</p>
+    <div class="meta">${item.date} • LER MATÉRIA →</div>
+   </div>
+  </article>
+ `).join("");
+
+ document.getElementById("count").textContent=
+  filtered.length+" matérias";
+
+ if(!filtered.length){
+  grid.innerHTML=
+   '<p class="empty">Nenhuma matéria encontrada.</p>';
+ }
+
+ grid.querySelectorAll(".news-card").forEach((card,i)=>{
+  card.addEventListener("click",()=>openArticle(filtered[i]));
+ });
+}
+
+function renderSide(){
+
+ const selected=news.slice(0,3);
+
+ side.innerHTML=selected.map(item=>`
+  <article class="side-card">
+   ${imageHTML(item.photo,item.team)}
+   <div>
+    <small>${item.team.toUpperCase()}</small>
+    <h3>${item.title}</h3>
+   </div>
+  </article>
+ `).join("");
+
+ side.querySelectorAll(".side-card").forEach((card,i)=>{
+  card.addEventListener("click",()=>openArticle(selected[i]));
+ });
+}
+
+// DESTAQUE PRINCIPAL
+
+document.getElementById("hero").addEventListener("click",()=>{
+ openArticle(news[0]);
+});
+
+// ABAS
+
+document.querySelectorAll("nav button").forEach(btn=>{
+ btn.addEventListener("click",()=>{
+  document.querySelectorAll("nav button").forEach(b=>{
+   b.classList.remove("active");
+  });
+
+  btn.classList.add("active");
+  activeCategory=btn.dataset.cat;
+  searchText="";
+  document.getElementById("searchInput").value="";
+  renderNews();
+ });
+});
+
+// BUSCA
+
+document.getElementById("searchForm").addEventListener("submit",e=>{
+ e.preventDefault();
+
+ searchText=
+  document.getElementById("searchInput").value.trim().toLowerCase();
+
+ activeCategory="Todos";
+
+ document.querySelectorAll("nav button").forEach(b=>{
+  b.classList.toggle("active",b.dataset.cat==="Todos");
+ });
+
+ renderNews();
+});
+
+// VÍDEOS
+
+document.getElementById("videos").innerHTML=videos.map(v=>`
+ <article class="video-card">
+  <div class="video-image">
+   ${imageHTML(v.photo,v.cat)}
+   <div class="play">▶</div>
+  </div>
+
+  <div class="video-info">
+   <small class="tag">${v.cat}</small>
+   <h3>${v.title}</h3>
+   <p>Encontre vídeos e melhores momentos desta modalidade.</p>
+   <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(v.search)}"
+      target="_blank" rel="noopener">
+      ASSISTIR NO YOUTUBE →
+   </a>
+  </div>
+ </article>
+`).join("");
+
+// FECHAR MATÉRIA
+
+function closeModal(){
+ modal.classList.remove("show");
+ document.body.style.overflow="";
+}
+
+document.getElementById("close").addEventListener("click",closeModal);
+
+modal.addEventListener("click",e=>{
+ if(e.target===modal)closeModal();
+});
+
+document.addEventListener("keydown",e=>{
+ if(e.key==="Escape")closeModal();
+});
+
+// INICIALIZAÇÃO
+
+renderSide();
+renderNews();
+
+</script>
+</body>
+</html>
+
